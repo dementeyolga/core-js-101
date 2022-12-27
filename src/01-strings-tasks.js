@@ -5,7 +5,6 @@
  *                                                                                           *
  ******************************************************************************************* */
 
-
 /**
  * Returns the result of concatenation of two strings.
  *
@@ -21,7 +20,6 @@
 function concatenateStrings(value1, value2) {
   return value1 + value2;
 }
-
 
 /**
  * Returns the length of given string.
@@ -68,7 +66,6 @@ function getStringFromTemplate(firstName, lastName) {
 function extractNameFromTemplate(value) {
   return value.slice(7, -1);
 }
-
 
 /**
  * Returns a first char of the given string.
@@ -145,7 +142,6 @@ function unbracketTag(str) {
   return str.slice(1, -1);
 }
 
-
 /**
  * Converts all characters of the specified string into the upper case
  *
@@ -205,17 +201,30 @@ function extractEmails(str) {
 function getRectangleString(width, height) {
   let rect = '';
 
-  for (let row = 0; row < height; row++) {
-    for (let col = 0; col < width; col++) {
+  for (let row = 0; row < height; row += 1) {
+    for (let col = 0; col < width; col += 1) {
       if (row === 0 && col === 0) {
         rect += '┌';
       } else if (row === 0 && col === width - 1) {
         rect += '┐\n';
-      } else if (row === height - 1 && col === )
+      } else if (row === height - 1 && col === 0) {
+        rect += '└';
+      } else if (row === height - 1 && col === width - 1) {
+        rect += '┘\n';
+      } else if ((row === 0 || row === height - 1) && (col !== 0 && col !== width - 1)) {
+        rect += '─';
+      } else if ((col === 0) && (row !== 0 && row !== height - 1)) {
+        rect += '│';
+      } else if ((col === width - 1) && (row !== 0 && row !== height - 1)) {
+        rect += '│\n';
+      } else {
+        rect += ' ';
+      }
     }
   }
-}
 
+  return rect;
+}
 
 /**
  * Encode specified string with ROT13 cipher
@@ -233,8 +242,21 @@ function getRectangleString(width, height) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const cypher = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
+  let result = '';
+
+  for (let i = 0; i < str.length; i += 1) {
+    if (/[-!$%^&*()_+|~=`{}[\]:";'<>?,./ ]/i.test(str[i])) {
+      result += str[i];
+    } else {
+      const indexOfReplacement = alphabet.indexOf(str[i]);
+      result += cypher[indexOfReplacement];
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -250,10 +272,9 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  return (typeof value === 'string') || (value instanceof String);
 }
-
 
 /**
  * Returns playid card id.
@@ -279,10 +300,14 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
-}
+function getCardId(value) {
+  const cardsArr = ['A♣', '2♣', '3♣', '4♣', '5♣', '6♣', '7♣', '8♣', '9♣', '10♣', 'J♣', 'Q♣', 'K♣',
+    'A♦', '2♦', '3♦', '4♦', '5♦', '6♦', '7♦', '8♦', '9♦', '10♦', 'J♦', 'Q♦', 'K♦',
+    'A♥', '2♥', '3♥', '4♥', '5♥', '6♥', '7♥', '8♥', '9♥', '10♥', 'J♥', 'Q♥', 'K♥',
+    'A♠', '2♠', '3♠', '4♠', '5♠', '6♠', '7♠', '8♠', '9♠', '10♠', 'J♠', 'Q♠', 'K♠'];
 
+  return cardsArr.indexOf(value);
+}
 
 module.exports = {
   concatenateStrings,
