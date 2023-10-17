@@ -245,9 +245,7 @@ function getRectangleString(width, height) {
  */
 function encodeToRot13(str) {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz !?.';
-  // eslint-disable-next-line operator-linebreak
-  const ROT13Alphabet =
-    'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm !?.';
+  const ROT13Alphabet = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm !?.';
 
   const arr = str.split('');
   return arr.map((letter) => ROT13Alphabet[alphabet.indexOf(letter)]).join('');

@@ -27,8 +27,16 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  if (num % 3 === 0 && num % 5 === 0) {
+    return 'FizzBuzz';
+  } if (num % 3 === 0) {
+    return 'Fizz';
+  } if (num % 5 === 0) {
+    return 'Buzz';
+  }
+
+  return num;
 }
 
 
@@ -43,8 +51,12 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  if (n === 1) {
+    return n;
+  }
+
+  return n * getFactorial(n - 1);
 }
 
 
@@ -60,8 +72,14 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  let sum = 0;
+
+  for (let i = n1; i <= n2; i += 1) {
+    sum += i;
+  }
+
+  return sum;
 }
 
 
@@ -80,8 +98,8 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  return (a + b > c && b + c > a && a + c > b);
 }
 
 
@@ -117,10 +135,37 @@ function isTriangle(/* a, b, c */) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
-}
+function doRectanglesOverlap(rect1, rect2) {
+  const rect1TopLeft = {
+    x: rect1.left,
+    y: rect1.top,
+  };
 
+  const rect1BottomRight = {
+    x: rect1.left + rect1.width,
+    y: rect1.top + rect1.height,
+  };
+
+  const rect2TopLeft = {
+    x: rect2.left,
+    y: rect2.top,
+  };
+
+  const rect2TBottomRight = {
+    x: rect2.left + rect2.width,
+    y: rect2.top + rect2.height,
+  };
+
+  if (rect1TopLeft.x > rect2TBottomRight.x || rect2TopLeft.x > rect1BottomRight.x) {
+    return false;
+  }
+
+  if (rect1TopLeft.y > rect2TBottomRight.y || rect2TopLeft.y > rect1BottomRight.y) {
+    return false;
+  }
+
+  return true;
+}
 
 /**
  * Returns true, if point lies inside the circle, otherwise false.
@@ -148,8 +193,11 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const distanceFromCenter = Math.sqrt((circle.center.x - point.x) ** 2
+                              + (circle.center.y - point.y));
+
+  return distanceFromCenter < circle.radius;
 }
 
 
