@@ -470,8 +470,27 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const matrixProduct = [];
+
+  // Iterate over m1 arrays
+  for (let i = 0; i < m1.length; i += 1) {
+    matrixProduct[i] = [];
+
+    // Iterate over m1 once again to reach the nth columns of the second matrix
+    for (let n = 0; n < m1.length; n += 1) {
+      let subDotProduct = 0;
+
+      // Iterate over relevant m2 column elements and mltiply with m1 row elements
+      for (let j = 0; j < m2.length; j += 1) {
+        subDotProduct += m1[i][j] * m2[j][n];
+      }
+
+      matrixProduct[i].push(subDotProduct);
+    }
+  }
+
+  return matrixProduct;
 }
 
 
@@ -505,8 +524,63 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  for (let i = 0; i < position.length; i += 1) {
+    let row0s = 0;
+    let rowXs = 0;
+    let col0s = 0;
+    let colXs = 0;
+
+    for (let j = 0; j < position.length; j += 1) {
+      const rowPos = position[i][j];
+      const colPos = position[j][i];
+
+      if (rowPos === '0') {
+        row0s += 1;
+      } else if (rowPos === 'X') {
+        rowXs += 1;
+      }
+
+      if (colPos === '0') {
+        col0s += 1;
+      } else if (colPos === 'X') {
+        colXs += 1;
+      }
+    }
+
+    if (col0s === 3) return '0';
+    if (colXs === 3) return 'X';
+    if (row0s === 3) return '0';
+    if (rowXs === 3) return 'X';
+  }
+
+  let topDiagonal0s = 0;
+  let topDiagonalXs = 0;
+  let bottomDiagonal0s = 0;
+  let bottomDiagonalXs = 0;
+  for (let i = 0; i < position.length; i += 1) {
+    const topDiagonalPos = position[i][i];
+    const bottomDiagonalPos = position[position.length - 1 - i][i];
+
+    if (topDiagonalPos === '0') {
+      topDiagonal0s += 1;
+    } else if (topDiagonalPos === 'X') {
+      topDiagonalXs += 1;
+    }
+
+    if (bottomDiagonalPos === '0') {
+      bottomDiagonal0s += 1;
+    } else if (bottomDiagonalPos === 'X') {
+      bottomDiagonalXs += 1;
+    }
+  }
+
+  if (topDiagonal0s === 3) return '0';
+  if (topDiagonalXs === 3) return 'X';
+  if (bottomDiagonal0s === 3) return '0';
+  if (bottomDiagonalXs === 3) return 'X';
+
+  return undefined;
 }
 
 
