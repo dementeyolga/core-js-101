@@ -116,38 +116,80 @@ function fromJSON(proto, json) {
  *  For more examples see unit tests.
  */
 
+class SelectorBuilder {
+  constructor() {
+  }
+
+  elementSelector(value) {
+
+  }
+
+  idSelector(value) {
+
+  }
+
+  classSelector(value) {
+
+  }
+
+  attrSelector(value) {
+
+  }
+
+  pseudoClassSelector(value) {
+
+  }
+
+  pseudoElementSelector(value) {
+
+  }
+
+  combineSelectors(selector1, combinator, selector2) {
+
+  }
+
+  stringify() {
+
+  }
+}
+
+class ElementSelector extends SelectorBuilder {
+  constructor(value) {
+    this.value = value;
+  }
+}
+
 const cssSelectorBuilder = {
   element(value) {
+    this.element = new SelectorBuilder(value);
 
+    return this;
   },
 
   id(value) {
-
+    // return new SelectorBuilder().idSelector(value);
   },
 
   class(value) {
-
+    // return new SelectorBuilder().classSelector(value);
   },
 
   attr(value) {
-
+    // return new SelectorBuilder().attrSelector(value);
   },
 
   pseudoClass(value) {
-
+    // return new SelectorBuilder().pseudoClassSelector(value);
   },
 
   pseudoElement(value) {
-
+    // return new SelectorBuilder().pseudoElementSelector(value);
   },
 
   combine(selector1, combinator, selector2) {
 
   },
 
-  stringify() {
-
-  },
 };
 
 
