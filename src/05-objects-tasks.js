@@ -117,77 +117,95 @@ function fromJSON(proto, json) {
  */
 
 class SelectorBuilder {
-  constructor() {
+  // constructor() {
+
+  // }
+
+  element(value) {
+    this.elementVal = value;
+
+    return this;
   }
 
-  elementSelector(value) {
+  id(value) {
+    this.idVal = `#${value}`;
 
+    return this;
   }
 
-  idSelector(value) {
+  class(value) {
+    this.classVal = this.classVal ? [...this.classVal, `.${value}`] : [`.${value}`];
 
+    return this;
   }
 
-  classSelector(value) {
+  attr(value) {
+    this.attrVal = this.attrVal ? [...this.attrVal, `[${value}]`] : [`[${value}]`];
 
+    return this;
   }
 
-  attrSelector(value) {
+  pseudoClass(value) {
+    this.pseudoClassVal = this.pseudoClassVal ? [...this.pseudoClassVal, `:${value}`] : [`:${value}`];
 
+    return this;
   }
 
-  pseudoClassSelector(value) {
+  pseudoElement(value) {
+    this.pseudoElementVal = `::${value}`;
 
+    return this;
   }
 
-  pseudoElementSelector(value) {
+  combine(selector1, combinator, selector2) {
+    this.combined = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
 
-  }
-
-  combineSelectors(selector1, combinator, selector2) {
-
+    return this;
   }
 
   stringify() {
+    let str = '';
 
-  }
-}
+    str += this.elementVal ? this.elementVal : '';
+    str += this.idVal ? this.idVal : '';
+    str += this.classVal ? this.classVal.join('') : '';
+    str += this.attrVal ? this.attrVal.join('') : '';
+    str += this.pseudoClassVal ? this.pseudoClassVal.join('') : '';
+    str += this.pseudoElementVal ? this.pseudoElementVal : '';
 
-class ElementSelector extends SelectorBuilder {
-  constructor(value) {
-    this.value = value;
+    str = this.combined ? this.combined : str;
+
+    return str;
   }
 }
 
 const cssSelectorBuilder = {
   element(value) {
-    this.element = new SelectorBuilder(value);
-
-    return this;
+    return new SelectorBuilder().element(value);
   },
 
   id(value) {
-    // return new SelectorBuilder().idSelector(value);
+    return new SelectorBuilder().id(value);
   },
 
   class(value) {
-    // return new SelectorBuilder().classSelector(value);
+    return new SelectorBuilder().class(value);
   },
 
   attr(value) {
-    // return new SelectorBuilder().attrSelector(value);
+    return new SelectorBuilder().attr(value);
   },
 
   pseudoClass(value) {
-    // return new SelectorBuilder().pseudoClassSelector(value);
+    return new SelectorBuilder().pseudoClass(value);
   },
 
   pseudoElement(value) {
-    // return new SelectorBuilder().pseudoElementSelector(value);
+    return new SelectorBuilder().pseudoElement(value);
   },
 
   combine(selector1, combinator, selector2) {
-
+    return new SelectorBuilder().combine(selector1, combinator, selector2);
   },
 
 };
