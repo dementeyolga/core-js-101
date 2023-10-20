@@ -117,42 +117,66 @@ function fromJSON(proto, json) {
  */
 
 class SelectorBuilder {
-  // constructor() {
-
-  // }
+  constructor() {
+    this.standardOrder = ['element', 'id', 'class', 'attribute', 'pseudo-class', 'pseudo-element'];
+  }
 
   element(value) {
+    if (this.elementVal) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+
     this.elementVal = value;
+    this.currentOrder = this.currentOrder ? [...this.currentOrder, 'element'] : ['element'];
+    this.checkOrder();
 
     return this;
   }
 
   id(value) {
+    if (this.idVal) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+
     this.idVal = `#${value}`;
+    this.currentOrder = this.currentOrder ? [...this.currentOrder, 'id'] : ['id'];
+    this.checkOrder();
 
     return this;
   }
 
   class(value) {
     this.classVal = this.classVal ? [...this.classVal, `.${value}`] : [`.${value}`];
+    this.currentOrder = this.currentOrder ? [...this.currentOrder, 'class'] : ['class'];
+    this.checkOrder();
 
     return this;
   }
 
   attr(value) {
     this.attrVal = this.attrVal ? [...this.attrVal, `[${value}]`] : [`[${value}]`];
+    this.currentOrder = this.currentOrder ? [...this.currentOrder, 'attribute'] : ['attribute'];
+    this.checkOrder();
 
     return this;
   }
 
   pseudoClass(value) {
     this.pseudoClassVal = this.pseudoClassVal ? [...this.pseudoClassVal, `:${value}`] : [`:${value}`];
+    this.currentOrder = this.currentOrder ? [...this.currentOrder, 'pseudo-class'] : ['pseudo-class'];
+    this.checkOrder();
 
     return this;
   }
 
   pseudoElement(value) {
+    if (this.pseudoElementVal) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+
     this.pseudoElementVal = `::${value}`;
+    this.currentOrder = this.currentOrder ? [...this.currentOrder, 'pseudo-element'] : ['pseudo-element'];
+    this.checkOrder();
 
     return this;
   }
@@ -161,6 +185,17 @@ class SelectorBuilder {
     this.combined = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
 
     return this;
+  }
+
+  checkOrder() {
+    if (this.currentOrder) {
+      const sortedOrderArr = [...this.currentOrder]
+        .sort((a, b) => this.standardOrder.indexOf(a) - this.standardOrder.indexOf(b));
+
+      if (this.currentOrder.join('') !== sortedOrderArr.join('')) {
+        throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+      }
+    }
   }
 
   stringify() {
