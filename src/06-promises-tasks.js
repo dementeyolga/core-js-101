@@ -102,9 +102,15 @@ function getFastestPromise(array) {
  */
 function chainPromises(array, action) {
   return new Promise((resolve) => {
-    resolve(array.reduce(action));
+    try {
+      resolve(array.reduce(async (acc, curr) => action(await acc, await curr)));
+    } catch (err) {
+      // eslint-disable-next-line no-unused-expressions
+      resolve(err);
+    }
   });
 }
+
 
 module.exports = {
   willYouMarryMe,
