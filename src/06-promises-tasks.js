@@ -101,9 +101,8 @@ function getFastestPromise(array) {
  *
  */
 function chainPromises(array, action) {
-  return new Promise((resolve) => {
-    resolve(array.reduce(action));
-  });
+  return Promise.resolve(array.reduce(async (acc, curr) => action(await acc, await curr)))
+    .catch((err) => err);
 }
 
 module.exports = {
