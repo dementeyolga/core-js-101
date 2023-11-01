@@ -101,14 +101,8 @@ function getFastestPromise(array) {
  *
  */
 function chainPromises(array, action) {
-  return new Promise((resolve) => {
-    try {
-      resolve(array.reduce(async (acc, curr) => action(await acc, await curr)));
-    } catch (err) {
-      // eslint-disable-next-line no-unused-expressions
-      resolve(err);
-    }
-  });
+  return Promise.resolve(array.reduce(async (acc, curr) => action(await acc, await curr)))
+    .catch((err) => err);
 }
 
 
